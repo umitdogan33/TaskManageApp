@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "522273351311",
+    "project_id": "taskmanageapp48",
+    "storage_bucket": "taskmanageapp48.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:522273351311:android:b70fbfa18c37187db4f2fa",
+        "android_client_info": {
+          "package_name": "com.example.task_manage_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "522273351311-20hrvihrnrkh1052phvt074pdr0i9ttr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-VpyjtBFYSLZ9vr3b61uwW5Rj8IMz1a0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "522273351311-20hrvihrnrkh1052phvt074pdr0i9ttr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
