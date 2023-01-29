@@ -2,10 +2,14 @@ import 'package:auto_route/auto_route.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:multiple_result/multiple_result.dart';
 import 'package:task_manage_app/core/components/AppDrawerWidget.dart';
+import 'package:task_manage_app/core/components/CustomAppBarWidget.dart';
 import 'package:task_manage_app/core/guards/AuthGuard.dart';
-import 'package:task_manage_app/core/utilities/PlatformDetect.dart';
+import 'package:task_manage_app/core/utilities/ErrorMessageHandle.dart';
+import 'package:task_manage_app/repository/UserDao.dart';
 import 'package:task_manage_app/routers/router.gr.dart';
+import 'package:task_manage_app/services/UserService.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'firebase_options.dart';
 
@@ -14,6 +18,11 @@ void main() async{
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // var refTest = FirebaseDatabase.instance.ref().child("test");
+  // var bilgi = HashMap<String,dynamic>();
+  // bilgi["isim"] = "Mehmet";
+  // refTest.push().set(bilgi);
+  
   setPathUrlStrategy();
   runApp(MyApp());
 }
@@ -46,25 +55,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
+   Future<void> deneme() async{
+     await UserService().addUser();
+   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
-        backgroundColor: Colors.amber[800],
-      ),
+      appBar: CustomAppBar(title: "Solidev Task App",),
       drawer: AppDrawer(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-           
-          ],
-        ),
-      ),
+      body: FutureBuilder(future: deneme(),builder: (context, snapshot) {
+        if(snapshot.hasData){
+          return Text("Data");
+        }else{
+          return Text(ErrorMessageHandle().getiste(snapshot.error.toString()));
+        }
+        
+      },),
       floatingActionButton: FloatingActionButton(onPressed: (){
-        context.pushRoute(PageRouteInfo("AddTaskRoute", path: "/addtask"));
+        context.pushRoute(PageRouteInfo("AddTaskRoute", path: "/addtask"),);
       },
       child: Icon(Icons.add),
       ),
