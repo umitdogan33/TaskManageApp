@@ -1,21 +1,44 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manage_app/Views/RegisterPage.dart';
 import 'package:task_manage_app/core/components/CustomAppBarWidget.dart';
+import 'package:task_manage_app/core/components/CustomSnackBarWidget.dart';
+import 'package:task_manage_app/main.dart';
+import 'package:task_manage_app/models/UserModel.dart';
+import 'package:task_manage_app/services/UserService.dart';
 
 class LoginPage extends StatelessWidget {
-  final tfEmail = TextEditingController();
-  final tfPassword = TextEditingController();
-  LoginPage({super.key});
+  var tfEmail = TextEditingController();
+  var tfPassword = TextEditingController();
 
+  var _fk = GlobalKey<FormState>();
+  Future<void> login(BuildContext context) async {
+    var auth = await FirebaseAuth.instance;
+    var sp =await SharedPreferences.getInstance();
+    if (_fk.currentState!.validate()) {
+      final result = await UserService().signIn(tfEmail.text, tfPassword.text);
+      result.when((success) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => MyHomePage()));
+
+      }, (error) {
+        CustomSnackBar().show(context, error.toString());
+      });
+    }
+  }
+
+  LoginPage({super.key});
   @override
   Widget build(BuildContext context) {
-    final _fk = GlobalKey<FormState>();
     return Scaffold(
         appBar: CustomAppBar(
           title: "Login Page",
+          actions: [],
         ),
         body: Form(
           key: _fk,
@@ -24,7 +47,7 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 50,
+                  height: 70,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: TextFormField(
@@ -34,11 +57,10 @@ class LoginPage extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(10))),
                         labelText: "Email",
                         hintText: "Email",
-                        border: OutlineInputBorder(),
                       ),
                       controller: tfEmail,
                       validator: (value) {
-                        if (value == null) {
+                        if (value!.isEmpty) {
                           return "Email is required";
                         }
                       },
@@ -46,10 +68,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 15,
-                ),
-                SizedBox(
-                  height: 50,
+                  height: 100,
                   child: Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: TextFormField(
@@ -59,11 +78,10 @@ class LoginPage extends StatelessWidget {
                                 BorderRadius.all(Radius.circular(10))),
                         labelText: "Password",
                         hintText: "Password",
-                        border: OutlineInputBorder(),
                       ),
                       controller: tfPassword,
                       validator: (value) {
-                        if (value == null) {
+                        if (value!.isEmpty) {
                           return "Password is required";
                         }
 
@@ -74,9 +92,9 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 50,
-                ),
+                // SizedBox(
+                //   height: 50,
+                // ),
                 SizedBox(
                   height: 50,
                   width: 200,
@@ -89,7 +107,7 @@ class LoginPage extends StatelessWidget {
                                   RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(18.0),
                           ))),
-                      onPressed: () {},
+                      onPressed: () => login(context),
                       child: Text(
                         "Login",
                         style: GoogleFonts.inter(
@@ -102,10 +120,18 @@ class LoginPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top:25.0),
-                      child: GestureDetector(child: Text("New User? Create account",),onTap: (){
-                        context.pushRoute(PageRouteInfo("RegisterRoute", path: "/register"));
-                      },),
+                      padding: const EdgeInsets.only(top: 25.0),
+                      child: GestureDetector(
+                        child: Text(
+                          "New User? Create account",
+                        ),
+                        onTap: () {
+                          Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()));
+                        },
+                      ),
                     ),
                   ],
                 )

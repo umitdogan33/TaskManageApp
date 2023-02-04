@@ -49,6 +49,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '522273351311',
     projectId: 'taskmanageapp48',
     authDomain: 'taskmanageapp48.firebaseapp.com',
+    databaseURL: 'https://taskmanageapp48-default-rtdb.firebaseio.com',
     storageBucket: 'taskmanageapp48.appspot.com',
   );
 
@@ -57,6 +58,7 @@ class DefaultFirebaseOptions {
     appId: '1:522273351311:android:b70fbfa18c37187db4f2fa',
     messagingSenderId: '522273351311',
     projectId: 'taskmanageapp48',
+    databaseURL: 'https://taskmanageapp48-default-rtdb.firebaseio.com',
     storageBucket: 'taskmanageapp48.appspot.com',
   );
 
@@ -65,6 +67,7 @@ class DefaultFirebaseOptions {
     appId: '1:522273351311:ios:0780eb3a29704f6bb4f2fa',
     messagingSenderId: '522273351311',
     projectId: 'taskmanageapp48',
+    databaseURL: 'https://taskmanageapp48-default-rtdb.firebaseio.com',
     storageBucket: 'taskmanageapp48.appspot.com',
     iosClientId: '522273351311-rddkq1a0an62k3t1e8kec6ko3beqgk2c.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskManageApp',
@@ -75,6 +78,7 @@ class DefaultFirebaseOptions {
     appId: '1:522273351311:ios:0780eb3a29704f6bb4f2fa',
     messagingSenderId: '522273351311',
     projectId: 'taskmanageapp48',
+    databaseURL: 'https://taskmanageapp48-default-rtdb.firebaseio.com',
     storageBucket: 'taskmanageapp48.appspot.com',
     iosClientId: '522273351311-rddkq1a0an62k3t1e8kec6ko3beqgk2c.apps.googleusercontent.com',
     iosBundleId: 'com.example.taskManageApp',

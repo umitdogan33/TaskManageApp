@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "522273351311",
+    "firebase_url": "https://taskmanageapp48-default-rtdb.firebaseio.com",
     "project_id": "taskmanageapp48",
     "storage_bucket": "taskmanageapp48.appspot.com"
   },
@@ -29,6 +30,13 @@
             {
               "client_id": "522273351311-20hrvihrnrkh1052phvt074pdr0i9ttr.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "522273351311-rddkq1a0an62k3t1e8kec6ko3beqgk2c.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.taskManageApp"
+              }
             }
           ]
         }
