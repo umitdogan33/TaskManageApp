@@ -149,7 +149,7 @@ class RegisterPage extends StatelessWidget {
                           ))),
                       onPressed: () => register(context),
                       child: Text(
-                        "Login",
+                        "Register",
                         style: GoogleFonts.inter(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,

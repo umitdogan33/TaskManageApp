@@ -49,7 +49,7 @@ class AppDrawer extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            Navigator.push(context, MaterialPageRoute(builder: (context) => ProfilPage()));
+            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilPage()));
           },
           child: ListTile(
             leading: Icon(Icons.account_circle),

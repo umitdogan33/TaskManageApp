@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manage_app/Views/ProfilePage.dart';
 import 'package:task_manage_app/core/components/CustomAppBarWidget.dart';
 import 'package:task_manage_app/core/components/CustomSnackBarWidget.dart';
 import 'package:task_manage_app/models/UserModel.dart';
@@ -23,7 +26,7 @@ class _UserNameEditPageState extends State<UserNameEditPage> {
 
  Future<UserModel> getUser() async {
       final result =
-          await UserService().getUserById("ofoSRoTGWDPv8C4K6sWSaSksYX43");
+          await UserService().getUserById(FirebaseAuth.instance.currentUser!.uid);
       return result.when((success) {
         _nameController.text = success.firstName;
         _surnameController.text = success.lastName;
@@ -33,6 +36,22 @@ class _UserNameEditPageState extends State<UserNameEditPage> {
         throw Exception(error.toString());
       });
     }
+
+  Future<void> update() async{
+    final result =  await UserService().updateUsername(FirebaseAuth.instance.currentUser!.uid, _nameController.text, _surnameController.text);
+    result.when((success) {
+      addShared();
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>const ProfilPage()));
+      return;
+    }, (error){
+      CustomSnackBar().show(context, error.toString());
+    });
+  }
+
+  void addShared() async{
+    var sp = await SharedPreferences.getInstance();
+    sp.setString("username", _nameController.text + " " + _surnameController.text);
+  }
 
   @override
   void initState(){
@@ -48,7 +67,11 @@ class _UserNameEditPageState extends State<UserNameEditPage> {
     return Scaffold(
         appBar: CustomAppBar(
             title: "Edit Username",
-            actions: [IconButton(onPressed: () {}, icon: Icon(Icons.check))]),
+            actions: [IconButton(onPressed: ()=>update(), icon: Icon(Icons.check))],
+            leading: IconButton(onPressed: () {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>const ProfilPage()));
+            }, icon: Icon(Icons.arrow_back)),
+            ),
         body: Form(
                 key: _fk,
                 child: Column(

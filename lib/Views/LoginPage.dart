@@ -72,6 +72,7 @@ class LoginPage extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(right: 15, left: 15),
                     child: TextFormField(
+                      obscureText: true,
                       decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius:

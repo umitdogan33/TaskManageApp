@@ -22,7 +22,7 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
 
     Future<void> changePassword() async{
       if(_fk.currentState!.validate()){
-       final result =await  UserService().updateUser(FirebaseAuth.instance.currentUser!.uid,_passwordController.text);
+       final result =await  UserService().updatePassword(FirebaseAuth.instance.currentUser!.uid,_passwordController.text);
        result.when((success) {
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>ProfilPage()));
         return;
@@ -36,7 +36,9 @@ class _PasswordEditPageState extends State<PasswordEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(title: "Edit Password",actions: [IconButton(onPressed: ()=>changePassword(), icon: Icon(Icons.check))]),
+      appBar: CustomAppBar(title: "Edit Password",actions: [IconButton(onPressed: ()=>changePassword(), icon: Icon(Icons.check))],leading: IconButton(onPressed: () {
+        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context)=>ProfilPage()));
+      }, icon: Icon(Icons.arrow_back))),
       body: Form(key: _fk,child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

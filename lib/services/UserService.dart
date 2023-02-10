@@ -1,13 +1,14 @@
 import 'dart:collection';
-import 'dart:convert';
 import 'dart:ffi';
+import 'package:firebase_admin/testing.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_admin/src/app/app.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:task_manage_app/models/UserModel.dart';
 
 class UserService {
-  Future<Result<dynamic, String>> updateUser(
+ Future<Result<dynamic, String>> updatePassword(
       String userId, String password) async {
     try {
       var ref = FirebaseDatabase.instance.ref().child("users/$userId");
@@ -19,19 +20,40 @@ class UserService {
     }
   }
 
-  Future<Result<UserModel, String>> getUserById(String userId) async {
-    final snapshot =
-        await FirebaseDatabase.instance.ref().child("users/$userId").get();
-    if (snapshot.exists) {
-      final data = snapshot.value as dynamic;
-      return Success(UserModel.fromJson(data));
-    } else {
-      return Error("No data found");
+  Future<Result<dynamic, String>> updateUsername(
+      String userId, String firstName,String lastName) async {
+    try {
+      var ref = FirebaseDatabase.instance.ref().child("users/$userId");
+      var data = HashMap<String, dynamic>();
+      data["firstname"] = firstName;
+      data["lastname"] = lastName;
+      return Success(ref.update(data));
+    } catch (e) {
+      return Error(e.toString());
     }
   }
 
-  Future<Result<dynamic, String>> addUser(
-      String firstName, String lastName, String email, String password) async {
+  Future<Result<UserModel, String>> getUserById(String userId) async {
+    try {
+      final snapshot =
+        await FirebaseDatabase.instance.ref().child("users/$userId").get();
+    if (snapshot.exists) {
+      if(snapshot.value == null){
+        return Error("User not found");
+      }
+      final data = snapshot.value as dynamic;
+      return Success(UserModel.fromJson(data));
+    } else {
+      return Error("User not found");
+    }
+    } catch (e) {
+      return Error(e.toString());
+    }
+    
+  }
+  
+
+  Future<Result<dynamic, String>> addUser( String firstName, String lastName, String email, String password) async {
     try {
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -62,9 +84,21 @@ class UserService {
 
   Future<Result<dynamic, String>> signIn(String email, String password) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password)
-          .then((value) => print(value));
+      var instance = await FirebaseAuth.instance;
+      await instance
+          .signInWithEmailAndPassword(email: email, password: password);
+      final userResult = await getUserById(instance.currentUser!.uid);
+     return userResult.when((success){return Success(Void);}, (error){return Error(error.toString());});
+
+    } catch (e) {
+      return Error(e.toString());
+    }
+  }
+
+  Future<Result<dynamic, String>> deleteUser(String userId) async {
+    try {
+      var ref = FirebaseDatabase.instance.ref().child("users/$userId");
+      ref.remove();
       return Success(Void);
     } catch (e) {
       return Error(e.toString());

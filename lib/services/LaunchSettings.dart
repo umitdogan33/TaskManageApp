@@ -1,5 +1,7 @@
 import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:task_manage_app/services/DeviceIdService.dart';
+import 'package:task_manage_app/services/UserService.dart';
 
 class LaunchSettings {
   void Settings() async {
@@ -19,5 +21,7 @@ class LaunchSettings {
       sp.setBool("notiemail", true);
       sp.setBool("firstOpen", false);
     }
+    print(device!.userId.toString());
+    DeviceIdService().addDevice(device!.userId.toString());
   }
 }

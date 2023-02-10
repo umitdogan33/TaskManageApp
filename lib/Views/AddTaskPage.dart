@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:task_manage_app/core/components/CustomSnackBarWidget.dart';
 import 'package:task_manage_app/main.dart';
+import 'package:task_manage_app/services/DeviceIdService.dart';
 import 'package:task_manage_app/services/TaskService.dart';
 
 class AddTaskPage extends StatefulWidget {
@@ -29,6 +31,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   }
 
   bool isConfirm = false;
+  bool isAdmin = FirebaseAuth.instance.currentUser!.uid == "GwF9MD0mUaXmyyskOLputrIwNGF3";
   final titleController = TextEditingController();
 
   final descriptionController = TextEditingController();
@@ -40,14 +43,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
   final dueDateController = TextEditingController();
 
   Future<void> add() async {
-    if (_fk.currentState!.validate()) {
+    if (_fk.currentState!.validate() && isConfirm) {
       final result =await TaskService().add(
-          titleController.text, descriptionController.text, selectedDate,true);
+          titleController.text, descriptionController.text, selectedDate.toString(),true);
 
       result.when((success){
+        DeviceIdService().pushNotificationAll("Added new task", "New Task");
         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=>MyHomePage()));
       }, (error){
-        CustomSnackBar().show(context, error.toString());
+        CustomSnackBar().show(context, error.toString() ?? "Accept the terms");
       });
     }
   }
@@ -122,12 +126,15 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   )
                 ],
               ),
-              ElevatedButton(
-                  onPressed: () =>add(),
-                  child: Text(
-                    "Add Task",
-                    style: GoogleFonts.inter(fontWeight: FontWeight.bold),
-                  ))
+              Visibility(
+                visible: isAdmin,
+                child: ElevatedButton(
+                    onPressed: () =>add(),
+                    child: Text(
+                      "Add Task",
+                      style: GoogleFonts.inter(fontWeight: FontWeight.bold),
+                    )),
+              )
             ],
           ),
         ),
