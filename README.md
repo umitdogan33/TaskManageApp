@@ -1,16 +1,16 @@
-# task_manage_app
 
-A new Flutter project.
+# TASK MANAGE APP
 
-## Getting Started
+This project is task manage app. Task manage app was written with flutter.it is a mobile project.
 
-This project is a starting point for a Flutter application.
+## Installation
 
-A few resources to get you started if this is your first Flutter project:
+Install task manage app with <a href="https://github.com/umitdogan33/TaskManageApp/releases/download/v1.0/releasev1.0.rar" target="_blank">this link</a>. this url is release apk build. you please download this apk file and install on your phone
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Screen Record in app
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+<video height="600px" controls>
+  <source src="assets/screensinapp.mp4" type="video/mp4">
+</video>
+
+
